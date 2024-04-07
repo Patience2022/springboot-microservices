@@ -21,9 +21,9 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeRepository employeeRepository;
-    private RestTemplate restTemplate;
+//    private RestTemplate restTemplate;
     private ModelMapper modelMapper;
-    private WebClient webClient;
+//    private WebClient webClient;
     private FanAPIClient fanAPIClient;
     @Override
     public Employee createEmployee(Employee employee) {
