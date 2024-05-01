@@ -7,6 +7,8 @@ import com.parctice.employeeservice.entity.Employee;
 import com.parctice.employeeservice.repository.EmployeeRepository;
 import com.parctice.employeeservice.service.EmployeeService;
 import com.parctice.employeeservice.service.FanAPIClient;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -72,10 +74,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 //    }
 
 //    USING OPEN FEIGN TO MAKE A REST CALL
+
+//    @CircuitBreaker(name="{$spring.application.name}", fallbackMethod="getDefaultDepartment")
+    @Retry(name="{$spring.application.name}", fallbackMethod="getDefaultDepartment")
     @Override
     public APIResponseEntity getEmployee(long employeeId) {
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(
-                ()->new RuntimeException("No employee with given ID was found"));;
+                ()->new RuntimeException("No employee with given ID was found"));
 
         DepartmentDto departmentDto = fanAPIClient.getDepartment(employee.getDepartmentCode());
 
@@ -86,6 +91,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return apiResponse;
     }
+
     @Override
     public List<Employee> getAllEmployees() {
         return null;
@@ -99,5 +105,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> getEmployeesByLastName(String LastName) {
         return null;
+    }
+
+    public APIResponseEntity getDefaultDepartment(long employeeId, Exception exception) {
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(
+                ()->new RuntimeException("No employee with given ID was found"));
+
+        DepartmentDto departmentDto = new DepartmentDto();
+        departmentDto.setDepartmentCode("0000");
+        departmentDto.setDepartmentName("Default Department");
+        departmentDto.setDepartmentDescription("Default Department");
+        APIResponseEntity apiResponse = new APIResponseEntity();
+        apiResponse.setEmployee(modelMapper.map(employee, EmployeeDto.class));
+        apiResponse.setDepartment(departmentDto);
+
+        return apiResponse;
     }
 }
