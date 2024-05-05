@@ -1,0 +1,8 @@
+com\parctice\departmentservice\dto\DepartmentDto.class
+com\parctice\departmentservice\service\DepartmentService.class
+com\parctice\departmentservice\service\impl\DepartmentServiceImpl.class
+com\parctice\departmentservice\DepartmentServiceApplication.class
+com\parctice\departmentservice\repository\DepartmentRepository.class
+com\parctice\departmentservice\controller\MessageController.class
+com\parctice\departmentservice\entity\Department.class
+com\parctice\departmentservice\controller\DepartmentController.class

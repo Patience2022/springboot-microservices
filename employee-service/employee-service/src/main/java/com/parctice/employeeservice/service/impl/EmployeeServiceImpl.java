@@ -3,6 +3,7 @@ package com.parctice.employeeservice.service.impl;
 import com.parctice.employeeservice.dto.APIResponseEntity;
 import com.parctice.employeeservice.dto.DepartmentDto;
 import com.parctice.employeeservice.dto.EmployeeDto;
+import com.parctice.employeeservice.dto.OrganizationDto;
 import com.parctice.employeeservice.entity.Employee;
 import com.parctice.employeeservice.repository.EmployeeRepository;
 import com.parctice.employeeservice.service.EmployeeService;
@@ -83,11 +84,12 @@ public class EmployeeServiceImpl implements EmployeeService {
                 ()->new RuntimeException("No employee with given ID was found"));
 
         DepartmentDto departmentDto = fanAPIClient.getDepartment(employee.getDepartmentCode());
+//        OrganizationDto organization = fanAPIClient.getOrganization(employee.getOrganizationCode());
 
         APIResponseEntity apiResponse = new APIResponseEntity();
         apiResponse.setEmployee(modelMapper.map(employee, EmployeeDto.class));
         apiResponse.setDepartment(departmentDto);
-
+//        apiResponse.setOrganizationD(organization);
 
         return apiResponse;
     }

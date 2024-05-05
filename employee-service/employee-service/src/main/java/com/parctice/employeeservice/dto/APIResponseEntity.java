@@ -13,5 +13,6 @@ public class APIResponseEntity {
 
     private EmployeeDto employee;
     private DepartmentDto department;
+    private OrganizationDto organizationD;
 
 }
